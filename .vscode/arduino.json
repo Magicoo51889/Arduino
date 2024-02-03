@@ -1,5 +1,9 @@
 {
-    "sketch": "sketch.ino",
-    "output": "build",
-    "board": "arduino:avr:uno"
+    "sketch": "sketch\\sketch.ino",
+    "port": "COM3",
+    "board": "arduino:avr:uno",
+    "output": "../build",
+    "prebuild": "./prebuild.sh",
+    "postbuild": "./postbuild.sh",
+    "intelliSenseGen": "global"
 }
