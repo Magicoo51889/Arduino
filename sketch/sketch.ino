@@ -19,7 +19,6 @@ void loop()
     // Serial.println(buttonState);
     // delay(10);
 
-
 	digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
     digitalWrite(3, HIGH);  // turn the LED on (HIGH is the voltage level)
     delay(400);                      // wait for 0.4s
