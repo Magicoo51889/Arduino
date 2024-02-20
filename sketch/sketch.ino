@@ -1,13 +1,42 @@
+const int timeUnit = 200;
+
 void setup()
 {
 	pinMode(LED_BUILTIN, OUTPUT);
+    Serial.begin(115200);
+}
+
+void Dot(int timeUnit) {
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(timeUnit);                     
+    digitalWrite(LED_BUILTIN, LOW); 
+    delay(timeUnit);
+}
+
+void Dash(int timeUnit){
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(timeUnit*3);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(timeUnit);
 }
 
 void loop()
 {
-	digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
-    delay(400);                      // wait for 0.4s
-    digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
-    delay(400);                      // wait for 0.4s
+    for (int i = 0; i < 3; i++) {
+        Dot(timeUnit);
+    }
     
+    delay(timeUnit*3); // break between letters
+
+    for (int i = 0; i < 3; i++) {
+        Dash(timeUnit);
+    }
+
+    delay(timeUnit*3);  // break between letters
+
+    for (int i = 0; i < 3; i++) {
+        Dot(timeUnit);
+    }
+
+    delay(timeUnit*7); //break before repeating the sequence
 }
