@@ -1,5 +1,4 @@
-//const int INPUT_BUTTON = 8; // the number of the input button pin
-int timeUnit;
+const int timeUnit;
 
 void setup()
 {
