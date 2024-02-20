@@ -1,10 +1,9 @@
-const int timeUnit;
+const int timeUnit = 200;
 
 void setup()
 {
 	pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);
-    timeUnit = 200;
 }
 
 void Dot(int timeUnit) {
@@ -12,7 +11,6 @@ void Dot(int timeUnit) {
     delay(timeUnit);                     
     digitalWrite(LED_BUILTIN, LOW); 
     delay(timeUnit);
-
 }
 
 void Dash(int timeUnit){
