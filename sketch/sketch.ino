@@ -1,47 +1,45 @@
 //const int INPUT_BUTTON = 8; // the number of the input button pin
+int timeUnit;
 
 void setup()
 {
 	pinMode(LED_BUILTIN, OUTPUT);
     Serial.begin(115200);
+    timeUnit = 200;
+}
+
+void Dot(int timeUnit) {
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(timeUnit);                     
+    digitalWrite(LED_BUILTIN, LOW); 
+    delay(timeUnit);
+
+}
+
+void Dash(int timeUnit){
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(timeUnit*3);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(timeUnit);
 }
 
 void loop()
 {
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(400);                     
-    digitalWrite(LED_BUILTIN, LOW); 
-    delay(400);
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(400);                     
-    digitalWrite(LED_BUILTIN, LOW); 
-    delay(400);               
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(400);                     
-    digitalWrite(LED_BUILTIN, LOW); 
-    delay(400);
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(1200);                     
-    digitalWrite(LED_BUILTIN, LOW); 
-    delay(400);
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(1200);                     
-    digitalWrite(LED_BUILTIN, LOW); 
-    delay(400);    
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(1200);                     
-    digitalWrite(LED_BUILTIN, LOW); 
-    delay(400);    
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(400);                     
-    digitalWrite(LED_BUILTIN, LOW); 
-    delay(400);
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(400);                     
-    digitalWrite(LED_BUILTIN, LOW); 
-    delay(400);
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(400);                     
-    digitalWrite(LED_BUILTIN, LOW); 
-    delay(1200); //break before repeating the sequence
+    for (int i = 0; i < 3; i++) {
+        Dot(timeUnit);
+    }
+    
+    delay(timeUnit*3); // break between letters
+
+    for (int i = 0; i < 3; i++) {
+        Dash(timeUnit);
+    }
+
+    delay(timeUnit*3);  // break between letters
+
+    for (int i = 0; i < 3; i++) {
+        Dot(timeUnit);
+    }
+
+    delay(timeUnit*7); //break before repeating the sequence
 }
