@@ -1,14 +1,13 @@
-// const int timeUnit = 200;
-int LED1Pin = 4;
-int LED2Pin = 7;
-int LED3Pin = 2;
-int currentLED = 1;
+const int LED1Pin = 4;
+const int LED2Pin = 7;
+const int LED3Pin = 2;
 const int switchPin = 11;
-bool prevState = HIGH;
-bool stateNow = HIGH;
-bool LED1On = true;
-bool LED2On = false;
-bool LED3On = false;
+
+int currentLED = 4;
+int previousLED = 2;
+
+bool prevState = LOW;
+bool stateNow = LOW;
 
 void setup()
 {
@@ -19,59 +18,38 @@ void setup()
     Serial.begin(115200);
 }
 
-// void Dot(int timeUnit) {
-//     digitalWrite(LED_BUILTIN, HIGH);
-//     delay(timeUnit);                     
-//     digitalWrite(LED_BUILTIN, LOW); 
-//     delay(timeUnit);
-// }
-
-// void Dash(int timeUnit){
-//     digitalWrite(LED_BUILTIN, HIGH);
-//     delay(timeUnit*3);
-//     digitalWrite(LED_BUILTIN, LOW);
-//     delay(timeUnit);
-// }
+void ResetLEDs() {
+    digitalWrite(LED1Pin, LOW);
+    digitalWrite(LED2Pin, LOW);
+    digitalWrite(LED3Pin, LOW);
+}
 
 void loop()
 {
+    Serial.println(currentLED);
     stateNow = digitalRead(switchPin);
-    if (stateNow == LOW && prevState == HIGH) {
-        if (LED1On==true) {
-            LED1On = false;
-            LED2On = true;
-            LED3On = false;
-            currentLED = LED2Pin;
-        } else if (LED2On==true) {
-            LED1On = false;
-            LED2On = false;
-            LED3On = true;
-            currentLED = LED3Pin;
-        } else if (LED3On==true) {
-            LED1On = true;
-            LED2On = false;
-            LED3On = false;
-            currentLED = LED1Pin;
+    previousLED = currentLED;
+    if (stateNow != prevState) {
+        if(stateNow == HIGH){
+            if (currentLED == LED1Pin) {
+                currentLED = LED2Pin;
+                digitalWrite(previousLED, LOW);
+                digitalWrite(currentLED, HIGH);
+                Serial.println(currentLED);
+            } else if (currentLED == LED2Pin) {
+                currentLED = LED3Pin;
+                digitalWrite(previousLED, LOW);
+                digitalWrite(currentLED, HIGH);
+                Serial.println(currentLED);
+            } else if (currentLED == LED3Pin) {
+                currentLED = LED1Pin;
+                digitalWrite(previousLED, LOW);
+                digitalWrite(currentLED, HIGH);
+                Serial.println(currentLED);
+            } else {
+                ResetLEDs();
+            }
         }
-        digitalWrite(currentLED, HIGH);
     }
-
-    
-    // for (int i = 0; i < 3; i++) {
-    //     Dot(timeUnit);
-    // }
-    
-    // delay(timeUnit*3); // break between letters
-
-    // for (int i = 0; i < 3; i++) {
-    //     Dash(timeUnit);
-    // }
-
-    // delay(timeUnit*3);  // break between letters
-
-    // for (int i = 0; i < 3; i++) {
-    //     Dot(timeUnit);
-    // }
-
-    // delay(timeUnit*7); //break before repeating the sequence
+    prevState = stateNow;
 }
