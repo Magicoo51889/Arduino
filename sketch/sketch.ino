@@ -1,42 +1,58 @@
-const int timeUnit = 200;
+// const int timeUnit = 200;
+int LEDPin = 4;
+const int switchPin = 11;
+bool prevState = HIGH;
+bool stateNow = HIGH;
+bool LEDOn = false;
 
 void setup()
 {
-	pinMode(LED_BUILTIN, OUTPUT);
+	pinMode(LEDPin, OUTPUT);
+    pinMode(switchPin, INPUT);
     Serial.begin(115200);
 }
 
-void Dot(int timeUnit) {
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(timeUnit);                     
-    digitalWrite(LED_BUILTIN, LOW); 
-    delay(timeUnit);
-}
+// void Dot(int timeUnit) {
+//     digitalWrite(LED_BUILTIN, HIGH);
+//     delay(timeUnit);                     
+//     digitalWrite(LED_BUILTIN, LOW); 
+//     delay(timeUnit);
+// }
 
-void Dash(int timeUnit){
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(timeUnit*3);
-    digitalWrite(LED_BUILTIN, LOW);
-    delay(timeUnit);
-}
+// void Dash(int timeUnit){
+//     digitalWrite(LED_BUILTIN, HIGH);
+//     delay(timeUnit*3);
+//     digitalWrite(LED_BUILTIN, LOW);
+//     delay(timeUnit);
+// }
 
 void loop()
 {
-    for (int i = 0; i < 3; i++) {
-        Dot(timeUnit);
+    stateNow = digitalRead(switchPin); // toggles the LED on and off
+    if (stateNow != prevState) {
+        if (stateNow == LOW) {
+            LEDOn = !LEDOn;
+            digitalWrite(LEDPin, LEDOn);
+        }
     }
+    prevState = stateNow;
+
     
-    delay(timeUnit*3); // break between letters
+    // for (int i = 0; i < 3; i++) {
+    //     Dot(timeUnit);
+    // }
+    
+    // delay(timeUnit*3); // break between letters
 
-    for (int i = 0; i < 3; i++) {
-        Dash(timeUnit);
-    }
+    // for (int i = 0; i < 3; i++) {
+    //     Dash(timeUnit);
+    // }
 
-    delay(timeUnit*3);  // break between letters
+    // delay(timeUnit*3);  // break between letters
 
-    for (int i = 0; i < 3; i++) {
-        Dot(timeUnit);
-    }
+    // for (int i = 0; i < 3; i++) {
+    //     Dot(timeUnit);
+    // }
 
-    delay(timeUnit*7); //break before repeating the sequence
+    // delay(timeUnit*7); //break before repeating the sequence
 }
