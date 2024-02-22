@@ -1,42 +1,55 @@
-const int timeUnit = 200;
+const int LED1Pin = 4;
+const int LED2Pin = 7;
+const int LED3Pin = 2;
+const int switchPin = 11;
+
+int currentLED = 4;
+int previousLED = 2;
+
+bool prevState = LOW;
+bool stateNow = LOW;
 
 void setup()
 {
-	pinMode(LED_BUILTIN, OUTPUT);
+	pinMode(LED1Pin, OUTPUT);
+    pinMode(LED2Pin, OUTPUT);
+    pinMode(LED3Pin, OUTPUT);
+    pinMode(switchPin, INPUT);
     Serial.begin(115200);
 }
 
-void Dot(int timeUnit) {
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(timeUnit);                     
-    digitalWrite(LED_BUILTIN, LOW); 
-    delay(timeUnit);
-}
-
-void Dash(int timeUnit){
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(timeUnit*3);
-    digitalWrite(LED_BUILTIN, LOW);
-    delay(timeUnit);
+void ResetLEDs() {
+    digitalWrite(LED1Pin, LOW);
+    digitalWrite(LED2Pin, LOW);
+    digitalWrite(LED3Pin, LOW);
 }
 
 void loop()
 {
-    for (int i = 0; i < 3; i++) {
-        Dot(timeUnit);
+    Serial.println(currentLED);
+    stateNow = digitalRead(switchPin);
+    previousLED = currentLED;
+    if (stateNow != prevState) {
+        if(stateNow == HIGH){
+            if (currentLED == LED1Pin) {
+                currentLED = LED2Pin;
+                digitalWrite(previousLED, LOW);
+                digitalWrite(currentLED, HIGH);
+                Serial.println(currentLED);
+            } else if (currentLED == LED2Pin) {
+                currentLED = LED3Pin;
+                digitalWrite(previousLED, LOW);
+                digitalWrite(currentLED, HIGH);
+                Serial.println(currentLED);
+            } else if (currentLED == LED3Pin) {
+                currentLED = LED1Pin;
+                digitalWrite(previousLED, LOW);
+                digitalWrite(currentLED, HIGH);
+                Serial.println(currentLED);
+            } else {
+                ResetLEDs();
+            }
+        }
     }
-    
-    delay(timeUnit*3); // break between letters
-
-    for (int i = 0; i < 3; i++) {
-        Dash(timeUnit);
-    }
-
-    delay(timeUnit*3);  // break between letters
-
-    for (int i = 0; i < 3; i++) {
-        Dot(timeUnit);
-    }
-
-    delay(timeUnit*7); //break before repeating the sequence
+    prevState = stateNow;
 }
