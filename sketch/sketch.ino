@@ -1,8 +1,8 @@
 // const int timeUnit = 200;
 int LEDPin = 4;
 const int switchPin = 11;
-bool prevState = HIGH;
-bool stateNow = HIGH;
+bool prevState = LOW;
+bool stateNow = LOW;
 bool LEDOn = false;
 
 void setup()
