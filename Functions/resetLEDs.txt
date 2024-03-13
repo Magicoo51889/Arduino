@@ -1,0 +1,4 @@
+void ResetLEDs() {
+    digitalWrite(LED1Pin, LOW);
+    // insert extra pins as needed
+}
