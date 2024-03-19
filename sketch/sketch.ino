@@ -1,55 +1,50 @@
-const int LED1Pin = 4;
-const int LED2Pin = 7;
-const int LED3Pin = 2;
-const int switchPin = 11;
+const int buttonPin = 13;
+bool buttonValue;
 
-int currentLED = 4;
-int previousLED = 2;
+const int div2Pin = 10;
+const int div3Pin = 9;
+const int div5Pin = 8;
 
-bool prevState = LOW;
-bool stateNow = LOW;
+int Counter = 0;
 
-void ResetLEDs() {
-    digitalWrite(LED1Pin, LOW);
-    digitalWrite(LED2Pin, LOW);
-    digitalWrite(LED3Pin, LOW);
+void setup() {
+  pinMode(div2Pin, OUTPUT);
+  pinMode(div3Pin, OUTPUT);
+  pinMode(div5Pin, OUTPUT);
+  pinMode(buttonPin, INPUT);
+  Serial.begin(9600);
 }
 
-void setup()
-{
-	pinMode(LED1Pin, OUTPUT);
-    pinMode(LED2Pin, OUTPUT);
-    pinMode(LED3Pin, OUTPUT);
-    pinMode(switchPin, INPUT);
-    Serial.begin(115200);
-}
+void loop() {
+  buttonValue = digitalRead(buttonPin);
 
-void loop()
-{
-    Serial.println(currentLED);
-    stateNow = digitalRead(switchPin);
-    previousLED = currentLED;
-    if (stateNow != prevState) {
-        if(stateNow == HIGH){
-            if (currentLED == LED1Pin) {
-                currentLED = LED2Pin;
-                digitalWrite(previousLED, LOW);
-                digitalWrite(currentLED, HIGH);
-                Serial.println(currentLED);
-            } else if (currentLED == LED2Pin) {
-                currentLED = LED3Pin;
-                digitalWrite(previousLED, LOW);
-                digitalWrite(currentLED, HIGH);
-                Serial.println(currentLED);
-            } else if (currentLED == LED3Pin) {
-                currentLED = LED1Pin;
-                digitalWrite(previousLED, LOW);
-                digitalWrite(currentLED, HIGH);
-                Serial.println(currentLED);
-            } else {
-                ResetLEDs();
-            }
-        }
+  if (buttonValue == LOW) {
+    Counter++;
+
+    int Div2 = Counter % 2;
+    int Div3 = Counter % 3;
+    int Div5 = Counter % 5;
+
+    Serial.println("Button is pressed");
+    Serial.println(Counter);
+    Serial.println(div2Pin);
+
+    if (Div2 = 0) {
+      digitalWrite(div2Pin, HIGH);
     }
-    prevState = stateNow;
+    if (Div3 = 0) {
+      digitalWrite(div3Pin, HIGH);
+    }
+    if (Div5 = 0) {
+      digitalWrite(div5Pin, HIGH);
+    }
+    delay(2000);
+  } else {
+    digitalWrite(div2Pin, LOW);
+    digitalWrite(div3Pin, LOW);
+    digitalWrite(div5Pin, LOW);
+    Serial.println("Button is not pressed");
+  }
+
+  delay(100);
 }
