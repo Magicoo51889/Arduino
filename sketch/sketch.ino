@@ -1,19 +1,54 @@
-int LEDPin = 9;
+int ledPin = 3;
+int switchPin = 7;
+
 int brightness = 0;
+int defaultBrightness = 63;
 int fadeAmount = 5;
 
-void setup() {
-  pinMode(LEDPin, OUTPUT);
+int delayTime = 100;
+
+bool prevState = LOW;
+bool stateNow = LOW;
+
+void Flash() {
+  digitalWrite(ledPin, HIGH); // turn the LED on
+  delay(delayTime); // wait for a second
+  digitalWrite(ledPin, LOW); // turn the LED off
+  delay(delayTime); // wait for a second
 }
 
-void loop() {
-  analogWrite(LEDPin, brightness); // update the brightness of the LED
-
-  brightness = brightness + fadeAmount; // change the brightness for next time through the loop
-
-  if (brightness == 0 || brightness == 255) { // reverse the direction of the fading at the ends of the fade
-    fadeAmount = -fadeAmount;
+void FadeIn() {
+  for (int i = 0; i <= 255; i++) {
+    analogWrite(ledPin, i);
+    delay(delayTime);
   }
+}
 
-  delay(30);
+void FadeOut() {
+  for (int i = 255; i >= 0; i--) {
+    analogWrite(ledPin, i);
+    delay(delayTime);
+  }
+}
+
+
+void setup () {
+  pinMode(ledPin, OUTPUT);
+  pinMode(switchPin, INPUT);
+}
+
+void loop () {
+  stateNow = digitalRead(switchPin);
+  if(stateNow == HIGH){
+    for (int i = 0; i <= 4; i++) { // repeat the flash 4 times
+      Flash();
+    }
+
+    for (int i = 0; i <= 3; i++) {// repeat the fade 3 times
+      FadeIn();
+      FadeOut();
+    }
+  } else {
+    analogWrite(ledPin, defaultBrightness);
+  }
 }

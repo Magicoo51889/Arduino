@@ -1,0 +1,7 @@
+set brightness to led 3
+
+check brightness is equal to 0 or 255
+
+brightness = brightness + fadeAmount
+
+repeat
