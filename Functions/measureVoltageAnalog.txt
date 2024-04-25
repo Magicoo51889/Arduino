@@ -1,7 +1,7 @@
 /*
   - Measures a voltage using an analog pin and prints the result to the serial monitor.
   - Measured voltage is in millivolts (mV).
-  - Maximum resolution is 4.88mV when using a 5V reference voltage, else if using a 5.114V reference voltage, the resolution is 4.99mV.
+  - Resolution is 4.88mV.
 
   Jack Foot (2024)
 */
@@ -15,19 +15,11 @@ void setup() {
 void loop(){
   Serial.println("Voltage (mV) is:");
   Serial.println(measureVoltage(A0));
-  Serial.println("ADU is:");
-  Serial.println(measureADU(A0));
-  delay(2000);
 }
 
 float measureVoltage(int APin){
   int ADU = analogRead(APin);
-  float voltage = ADU * (5.114 / 1024); // 5.0 Default, 5.114 for more accurate results
+  float voltage = ADU * (5.0 / 1024);
   voltage = voltage * 1000; // Converts to mV
   return voltage;
-}
-
-float measureADU(int APin){
-  int ADU = analogRead(APin);
-  return ADU;
 }
