@@ -1,7 +1,13 @@
-set brightness to led 3
+loop{
+    if button state == low:
+        green light HIGH
+        pedestrian red HIGH
+        current State = False
 
-check brightness is equal to 0 or 255
-
-brightness = brightness + fadeAmount
-
-repeat
+    else
+        currentState = True
+        while currentState == True:
+            Lights sequence
+            currentState = False
+            return
+}
