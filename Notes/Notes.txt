@@ -1,0 +1,2 @@
+- When using logic gates (especially 4000 series CMOS) make sure to place a 100nF across the power supply of the IC to negate electrical interference. So positive to a capacitor and the positive of 
+the IC, and then from the other end of the capacitor to negative. 

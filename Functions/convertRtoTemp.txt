@@ -1,0 +1,19 @@
+int R = 5000;
+int Vs = 5;
+
+float A = 1.47444721E-3;
+float B = 2.370486854E-4;
+float C = 1.079376360E-7;
+
+float measureVoltage(int Apin) {
+  int ADU = analogRead(Apin);
+  float voltage = ADU * Vs / 1024;
+  return voltage;
+}
+
+float convertTemperature(float volts) {
+  float resistance = R*volts/(Vs-volts);
+  float NLog = log(resistance);
+  float temperature = (1/(A + B*NLog + C*NLog*NLog*NLog)) - 273.15;
+  return temperature;
+}
