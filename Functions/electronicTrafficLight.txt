@@ -1,0 +1,126 @@
+/*
+Traffic Light System
+
+This is a simple traffic light system that uses an Arduino Uno and a few LEDs to simulate a traffic light system.
+Uses the standard where an amber shows for 3 seconds. 
+Green shows for 5 seconds and red shows for 5 seconds.
+
+In addition to the standard traffic lights there is also a pedestrian light, showing green and red. 
+
+The lights operate at the push of a button, changing the lighs to red, like a normal pedestrian crossing.
+
+Authors: Jack Foot & Sebastian Crabb
+Date: 09-05-2024
+
+*/
+
+// Define the pin numbers for the traffic lights
+
+const int redPin = 2;
+const int yellowPin = 3;
+const int greenPin = 4;
+
+// Define the pin numbers for the pedestrian lights
+const int pedestrianRedPin = 5;
+const int pedestrianGreenPin = 6;
+
+// Define the pin number for the button
+const int buttonPin = 7;
+
+// Define the durations for each light state
+const unsigned  amberDuration = 3000;
+const unsigned  greenDuration = 5000;
+const unsigned  redDuration = 5000;
+
+// Define the variable to store the current state
+int currentState = 0;
+
+void setup() {
+  // Initialize the pin modes
+  PMOut(redPin);
+  PMOut(yellowPin);
+  PMOut(greenPin);
+  PMOut(pedestrianRedPin);
+  PMOut(pedestrianGreenPin);
+  PMIn(buttonPin);
+}
+
+void loop() {
+  // Check if the button is pressed
+  if (digitalRead(buttonPin) == LOW) {
+    // Change the lights to red for the pedestrian crossing
+    DW(redPin, LOW);
+    DW(yellowPin, LOW);
+    DW(greenPin, HIGH);
+    DW(pedestrianRedPin, HIGH);
+    DW(pedestrianGreenPin, LOW);
+    delay(greenDuration);
+  } else {
+    // Change the lights according to the standard traffic light sequence
+    switch (currentState) {
+      case 0:
+        DW(redPin, LOW);
+        DW(yellowPin, LOW);
+        DW(greenPin, HIGH);
+        DW(pedestrianRedPin, HIGH);
+        DW(pedestrianGreenPin, LOW);
+        
+        currentState = 1;
+
+      case 1:
+        DW(redPin, LOW);
+        DW(yellowPin, HIGH);
+        DW(greenPin, LOW);
+        DW(pedestrianRedPin, HIGH);
+        DW(pedestrianGreenPin, LOW);
+        
+        currentState = 2;
+
+      case 2:
+        DW(redPin, HIGH);
+        DW(yellowPin, LOW);
+        DW(greenPin, LOW);
+        DW(pedestrianRedPin, LOW);
+        DW(pedestrianGreenPin, HIGH);
+        
+        currentState = 3;
+
+      case 3:
+        DW(redPin, HIGH);
+        DW(yellowPin, HIGH);
+        DW(greenPin, LOW);
+        DW(pedestrianRedPin, HIGH);
+        DW(pedestrianGreenPin, LOW);
+        
+        currentState = 4;
+
+      case 4:
+        DW(redPin, LOW);
+        DW(yellowPin, LOW);
+        DW(greenPin, HIGH);
+        DW(pedestrianRedPin, HIGH);
+        DW(pedestrianGreenPin, LOW);
+        
+        currentState = 1;
+
+        break;
+    }
+  }
+}
+
+// shorthand functions
+void DW(char x, int y) {
+  return DW(x , y);
+}
+
+bool DR(int x) {
+  return digitalRead(x);
+}
+
+void PMOut(int x) {
+  return pinMode(x, OUTPUT);
+} 
+
+void PMIn(int x) {
+  return pinMode(x, INPUT);
+}

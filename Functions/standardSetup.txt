@@ -1,0 +1,11 @@
+const int LED1Pin = 2;
+const int LED2Pin = 4;
+const int LED3Pin = 7;
+
+void setup()
+{
+	pinMode(LED1Pin, OUTPUT);
+    pinMode(LED2Pin, OUTPUT);
+    pinMode(LED3Pin, OUTPUT);
+    Serial.begin(115200);
+}

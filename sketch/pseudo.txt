@@ -1,22 +1,13 @@
-led 1
-led 2
-led 3
+loop{
+    if button state == low:
+        green light HIGH
+        pedestrian red HIGH
+        current State = False
 
-switch pin
-currentLed = get LED on
-bool state = high // turns led on as soon as code starts
-bool previousState = high // stores the last state of state
-
-get currentLED
-if currentLED = led 1
-    turn on led 2
-    turn off led 1
-    turn off led 3
-else if currentLED = led 2
-    turn on led 3
-    turn off led 1
-    turn off led 2
-else if currentLED = led 3
-    turn on led 1
-    turn off led 2
-    turn off led 3
+    else
+        currentState = True
+        while currentState == True:
+            Lights sequence
+            currentState = False
+            return
+}
