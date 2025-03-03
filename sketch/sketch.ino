@@ -1,72 +1,31 @@
-// Medical sensor monitor section: Product Code MS 01567326 Acme MediCorp
-// Version 5 (May 2024)
+const int ledPin = LED_BUILTIN;
+int ledState = LOW;
+unsigned long previousMillis = 0;
+const long interval = 1000;
+bool ReturnVal = false;
 
-// Pin Definitions & other constants
-const int Vlevel1 = 5;    //Minimum Voltage Indicator
-const int Vlevel2 = 6;    //Mid range voltage indicator
-const int Vlevel3 = 7;    //Maximum Voltage Indicator
-const int Vmeasure = A1;  // Voltage from sensor
-const int ResetPin = 2;   // Reset Visual Alarm
-
-const float ADU2mV = 5000.0 / 1024;
-
-//int val = 0;
-//float voltmV = 0;
-
-
-void setup() {
-  pinMode(Vlevel1, OUTPUT);
-  pinMode(Vlevel2, OUTPUT);
-  pinMode(Vlevel3, OUTPUT);
-  pinMode(Vmeasure, INPUT);
-  pinMode(ResetPin, INPUT);
-
-  Serial.begin(9600);  //For Serial Monitor if needed
+void setup(){
+  pinMode(ledPin, OUTPUT);
 }
 
-void loop() {
-
-  float voltage = measureVoltage(Vmeasure);  //Call voltage value function
-  Serial.println(voltage);                   //Checkpoint - Use Serial Monitor for voltage levels
-  bool alarmSet = checkVlevel(voltage);      //Check for major alarm
-  delay(50);
-
-  if ((alarmSet == 1) && (digitalRead(ResetPin) == 0)) {  //Reset with alarm overide switch. Make sure external monitor is reset
-    digitalWrite(Vlevel1, LOW);
-    digitalWrite(Vlevel2, LOW);
-    digitalWrite(Vlevel3, LOW);
-    alarmSet = 0;  //Reset the Alarm flag
-    delay(10000);  // Hold for 10 seconds to reset external monitor and analogue input
+void loop(){
+  if(CheckTimeElapsed()) {
+    ServiceToggleLED();
   }
 }
 
-// Voltage measure function
-float measureVoltage(int pin) {
-  int sensorvalue = analogRead(pin);
-  float volts = sensorvalue * ADU2mV;
-  return volts;
+bool CheckTimeElapsed(){
+  ReturnVal = false;
+  unsigned long currentMillis = millis(); 
+
+  if (currentMillis >= previousMillis + interval) {
+    previousMillis = currentMillis;
+    ReturnVal = true;
+  }
+  return ReturnVal;
 }
 
-// Check alarm level function
-bool checkVlevel(float measurement) {  //Check voltage level and set logic flags
-
-  bool state1 = LOW, state2 = LOW, state3 = LOW, alarm = LOW;
-
-  //Set Test Level Flags
-  if (measurement > 500) {
-    state1 = HIGH;
-  }
-  if (measurement > 1000) {
-    state2 = HIGH;
-  }
-  if (measurement > 2000) {
-    state3 = HIGH;
-    alarm = HIGH;
-  }
-
-  digitalWrite(Vlevel1, state1);
-  digitalWrite(Vlevel2, state2);
-  digitalWrite(Vlevel3, state3);
-
-  return alarm;
+void ServiceToggleLED(){
+  ledState = !ledState;
+  digitalWrite(ledPin, ledState);
 }
