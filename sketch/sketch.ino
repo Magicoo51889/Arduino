@@ -1,90 +1,26 @@
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+#define BUTTON 2
 
-// Pin Definitions
-const int EN=9;   //Half Bridge 1 Enable
-const int MC1=3;  //Motor Control 1
-const int MC2=2;  //Motor Control 2
+volatile bool LEDState = LOW;
 
-// The dimensions of the OLED display
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
-
-#define SCREEN_ADDRESS 0x3C // This is the address of the OLED
-#define OLED_RESET -1 // Reset pin for the display
-
-// create the display object
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-
-#define BMPWidth 64
-#define BMPHeight 64
-
-void setup()
-{
-  pinMode(EN, OUTPUT);
-  pinMode(MC1, OUTPUT);
-  pinMode(MC2, OUTPUT);
-
-  display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
-  display.clearDisplay();
-}
-
-void loop()
-{
-  //go forward
-  motorForward();
+void setup() {
+  // set pin directions
+  pinMode(BUTTON,INPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
   
-  delay(5000);
- 
-  //go backward
-  motorBackward();
+  // set initial state of LED
+  digitalWrite(LED_BUILTIN, LEDState);
   
-  delay(5000);
- 
-  //stop
-  motorStop();
-  
-  delay(5000);
-  
-  //Accelerate
-  motorAccelerate();
-
-  display.setTextColor(1);
-  display.setTextWrap(false);
-  display.setCursor(41, 29);
-  display.print("Forwards");
+  // set up ISR
+  attachInterrupt(digitalPinToInterrupt(BUTTON), toggleLED, FALLING);
 }
 
-const int motorForward(){
-  digitalWrite(EN, LOW);
-  digitalWrite(MC1, HIGH);
-  digitalWrite(MC2, LOW);
-  digitalWrite(EN, HIGH);
+void loop() {  
+  // wait an obnoxious amount of time to simulate other functions 
+  // that Arduino may need to perform
+  delay(2000);
 }
 
-const int motorBackward(){
-  digitalWrite(EN, LOW);
-  digitalWrite(MC1, LOW);
-  digitalWrite(MC2, HIGH);
-  digitalWrite(EN, HIGH);
+void toggleLED() {
+  LEDState = !LEDState;
+  digitalWrite(LED_BUILTIN, LEDState);
 }
-
-const int motorStop(){
-  digitalWrite(EN, LOW);
-  digitalWrite(MC1, LOW);
-  digitalWrite(MC2, LOW);
-  digitalWrite(EN, HIGH);
-}
-
-const int motorAccelerate(){
-  //increase the speed of the motor
-  digitalWrite(EN, LOW);
-  digitalWrite(MC1, HIGH);
-  digitalWrite(MC2, LOW);
-  
-  for(int speed = 0; speed<256; speed++) {
-    analogWrite(EN, speed);
-    delay(50);
-  }
-}
-
