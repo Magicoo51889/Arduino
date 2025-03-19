@@ -31,8 +31,6 @@ void setup()
 
 void loop()
 {
-  
-
   //go forward
   motorForward();
   
