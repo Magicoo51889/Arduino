@@ -1,0 +1,41 @@
+#define OPEN LOW
+#define CLOSED HIGH
+
+#define BUTTON 7
+#define SENSOR A2
+
+const int HighThreshold = 550;
+const int LowThreshold = 480;
+
+void setup() {}
+
+void loop() {}
+
+bool CheckSensor(){
+  static int threshold = HighThreshold;
+  bool ReturnVal;
+  int value = analogRead(SENSOR);
+
+  if(value >= threshold){
+    ReturnVal = true;
+    threshold = LowThreshold;
+  } else {
+    ReturnVal = false;
+    threshold = HighThreshold;
+  }
+  
+  return ReturnVal;
+}
+
+bool CheckButtonPress() {
+  static bool LastState = OPEN;
+  bool CurrentState = digitalRead(BUTTON);
+  bool ReturnVal = false;
+
+  if(CurrentState != LastState && CurrentState == CLOSED) {
+    ReturnVal = true;
+  }
+  LastState = CurrentState;
+
+  return ReturnVal;
+}

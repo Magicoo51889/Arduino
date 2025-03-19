@@ -1,0 +1,51 @@
+#include <Servo.h>
+int servoPin = 10; //servo pin
+Servo servo_1;
+int angle = 0;
+
+ void setup()
+{
+
+pinMode(9, OUTPUT); // LEDs are connected to pin 9
+pinMode(2, INPUT); // switch is connected to pin 2
+servo_1.attach(servoPin); // attaching servo 1 to servo pin that has been declared to pin 10
+}
+
+void loop()
+{
+	if (digitalRead(2) == HIGH)
+
+    {	//scan from 0 to 180 degrees
+
+       for(angle = 0; angle < 180; angle++) //counting up
+		{
+ 			digitalWrite(9, HIGH);	
+         	delay(200);
+         	digitalWrite(9, LOW);	
+         	delay(200);
+         	servo_1.write(angle);
+			delay(15);
+       }
+
+          //and scan back return from 0 to 180 degrees
+
+ 		for(angle = 180; angle > 0; angle--) //counting down
+		{	
+          	digitalWrite(9, HIGH);	
+         	delay(200);
+         	digitalWrite(9, LOW);	
+         	delay(200);
+          	servo_1.write(angle);
+			delay(15);
+          	
+		}
+
+
+    	}
+	
+	if (digitalRead(2) == LOW)    
+		{
+		digitalWrite(9, LOW);
+		}
+
+}

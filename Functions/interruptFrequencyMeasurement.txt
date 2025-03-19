@@ -1,0 +1,33 @@
+#define measurePin 2
+
+volatile unsigned int frequency = 0;
+
+void setup() {
+  pinMode(measurePin,INPUT);
+  attachInterrupt(digitalPinToInterrupt(measurePin), measureFrequency, RISING);
+
+  Serial.begin(9600);
+}
+
+void loop() {
+  Serial.println(frequency);
+  delay(500);
+}
+
+void measureFrequency() {
+  static unsigned long previousMicros = micros();
+  
+  // Measure the time elapsed since previous pulse
+  unsigned long currentMicros = micros();
+  unsigned long period = currentMicros - previousMicros;
+  
+  // Exit early if period is less than 100us 
+  // to avoid the divide by 0 error
+  if (period < 100) return;
+  
+  // Calculate frequency
+  frequency = 1000000 / period;
+  
+  // save current time for next iteration
+  previousMicros = currentMicros;
+}

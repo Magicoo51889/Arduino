@@ -1,0 +1,80 @@
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+// The dimensions of the OLED display
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+
+#define SCREEN_ADDRESS 0x3C // This is the address of the OLED
+#define OLED_RESET 2// Reset pin for the display
+
+// create the display object
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+void drawDice(int xpos, int ypos, int num) {
+  display.drawRect(xpos, ypos, 37, 37, SSD1306_WHITE); //13 14
+  int y1 = 8 + ypos;
+  int y2 = 18 + ypos;
+  int y3 = 28 + ypos;
+
+  int x1 = 8 + xpos;
+  int x2 = 18 + xpos;
+  int x3 = 28 + xpos;
+
+
+  switch (num) {
+      case 1:
+        display.fillCircle(x2, y2, 3, SSD1306_WHITE);
+        break;
+      case 2:
+        display.fillCircle(x3, y1, 3, SSD1306_WHITE);
+        display.fillCircle(x1, y3, 3, SSD1306_WHITE);
+        break;
+      case 3:
+        display.fillCircle(x1, y1, 3, SSD1306_WHITE);
+        display.fillCircle(x2, y2, 3, SSD1306_WHITE);
+        display.fillCircle(x3, y3, 3, SSD1306_WHITE);
+        break;
+      case 4:
+        display.fillCircle(x1, y1, 3, SSD1306_WHITE);
+        display.fillCircle(x1, y3, 3, SSD1306_WHITE);
+        display.fillCircle(x3, y1, 3, SSD1306_WHITE);
+        display.fillCircle(x3, y3, 3, SSD1306_WHITE);
+        break;
+      case 5:
+        display.fillCircle(x1, y1, 3, SSD1306_WHITE);
+        display.fillCircle(x1, y3, 3, SSD1306_WHITE);
+        display.fillCircle(x3, y1, 3, SSD1306_WHITE);
+        display.fillCircle(x3, y3, 3, SSD1306_WHITE);
+        display.fillCircle(x2, y2, 3, SSD1306_WHITE);        
+        break;
+      default:
+        display.fillCircle(x1, y1, 3, SSD1306_WHITE);
+        display.fillCircle(x1, y2, 3, SSD1306_WHITE);        
+        display.fillCircle(x1, y3, 3, SSD1306_WHITE);
+        display.fillCircle(x3, y1, 3, SSD1306_WHITE);
+        display.fillCircle(x3, y2, 3, SSD1306_WHITE);
+        display.fillCircle(x3, y3, 3, SSD1306_WHITE);
+        break;
+  }
+}
+
+void setup() {
+  display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
+  display.setRotation(4);
+  display.invertDisplay(false);
+  display.clearDisplay();
+
+  for (int Number = 1; Number<7; Number++) {
+    display.clearDisplay();
+    drawDice(50,10,Number);
+    display.display();
+    delay(1000);
+  }
+}
+
+void loop() {
+   
+}

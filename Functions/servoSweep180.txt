@@ -1,0 +1,29 @@
+
+#include <Servo.h>
+
+int servoPin = 3;
+Servo servo_1;
+
+int angle = 0; //servo position in degrees
+
+void setup() {
+  servo_1.attach(servoPin);  // attaches the servo on pin 9 to the servo object
+}
+
+
+void loop() {
+  //scan from 0 to 180 degrees
+  for(angle = 0; angle < 180; angle++)
+  {
+    servo_1.write(angle);
+    delay (15);
+  }
+  
+  //and scan back return from 180 to 0 degrees
+  
+  for(angle = 180; angle > 0; angle--)
+  {
+    servo_1.write(angle);
+    delay(15);
+  }
+}

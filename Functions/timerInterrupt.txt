@@ -1,0 +1,23 @@
+#include "uTimerLib.h"
+
+const int LED = 4;
+
+int period = 1000000; // period in microseconds
+
+volatile bool LEDState = LOW;
+
+void setup() {
+  // set pin directions
+  pinMode(LED,OUTPUT);
+  // set up the interrupt
+  TimerLib.setInterval_us(toggleLED, period/2);
+}
+
+void loop() {  
+}
+
+// The ISR
+void toggleLED() {
+  digitalWrite(LED, LEDState);
+  LEDState = !LEDState;
+}

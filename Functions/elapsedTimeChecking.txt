@@ -1,0 +1,17 @@
+unsigned long previousMillis = 0;
+const long interval = 1000;
+
+void setup() {}
+
+void loop() {}
+
+bool CheckTimeElapsed(){
+  bool ReturnVal = false;
+  unsigned long currentMillis = millis();
+
+  if(currentMillis >= previousMillis +interval) {
+    previousMillis = currentMillis;
+    ReturnVal = true;
+  }
+  return ReturnVal;
+}

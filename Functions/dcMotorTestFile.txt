@@ -1,0 +1,48 @@
+// Pin Definitions
+const int EN=9;   //Half Bridge 1 Enable
+const int MC1=3;  //Motor Control 1
+const int MC2=2;  //Motor Control 2
+
+void setup()
+{
+  pinMode(EN, OUTPUT);
+  pinMode(MC1, OUTPUT);
+  pinMode(MC2, OUTPUT);
+}
+
+void loop()
+{
+  //go forward
+  digitalWrite(EN, LOW);
+  digitalWrite(MC1, HIGH);
+  digitalWrite(MC2, LOW);
+  digitalWrite(EN, HIGH);
+  
+  delay(5000);
+ 
+  //go backward
+  digitalWrite(EN, LOW);
+  digitalWrite(MC1, LOW);
+  digitalWrite(MC2, HIGH);
+  digitalWrite(EN, HIGH);
+  
+  delay(5000);
+ 
+  //stop
+  digitalWrite(EN, LOW);
+  digitalWrite(MC1, LOW);
+  digitalWrite(MC2, LOW);
+  digitalWrite(EN, HIGH);
+  
+  delay(5000);
+  
+  //Accelerate
+  digitalWrite(EN, LOW);
+  digitalWrite(MC1, HIGH);
+  digitalWrite(MC2, LOW);
+  
+  for(int speed = 0; speed<256; speed++) {
+    analogWrite(EN, speed);
+    delay(50);
+  }
+}
