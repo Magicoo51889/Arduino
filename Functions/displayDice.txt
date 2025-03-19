@@ -8,7 +8,7 @@
 #define SCREEN_HEIGHT 64
 
 #define SCREEN_ADDRESS 0x3C // This is the address of the OLED
-#define OLED_RESET 4// Reset pin for the display
+#define OLED_RESET 2// Reset pin for the display
 
 // create the display object
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
